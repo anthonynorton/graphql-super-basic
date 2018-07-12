@@ -17,11 +17,7 @@ const FriendSchema = new Schema({
   lastName: { type: String, required: true },
   gender: { type: String },
   language: { type: String },
-  emails: [
-    {
-      emails: { type: String },
-    },
-  ],
+  email: { type: String },
 })
 
 export default defineOnce('Friend', FriendSchema)
