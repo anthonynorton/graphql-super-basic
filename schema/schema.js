@@ -37,7 +37,7 @@ const resolvers = {
       console.log(`\x1b[31m${id}\x1b[0m`)
 
       const resp = await FriendModel.findById({
-        _id: '5b4793cbe7179a2f2c78e59a',
+        _id: id,
       })
       const friendObj = await resp.toObject()
       const friend = {
