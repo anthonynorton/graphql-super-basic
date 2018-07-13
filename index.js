@@ -1,6 +1,6 @@
 import express from 'express'
 import graphqlHTTP from 'express-graphql'
-import schema from './schema/schema'
+import schema from './graphql'
 import mongoose from 'mongoose'
 import cors from 'cors'
 import keys from './keys'

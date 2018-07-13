@@ -1,41 +1,29 @@
-import { buildSchema } from 'graphql'
 import { makeExecutableSchema } from 'graphql-tools'
 import FriendModel from '../models/friend'
+import Friend from './friend'
 
-const typeDefs = `
-    type Friend {
-        id: ID
-        firstName: String
-        lastName: String
-        gender: String
-        language: String
-        email: String
+const RootQuery = `
+    type query {
+        getFriend(id: String!): Friend
     }
-    type Query {
-        friend(id: String!): Friend
-    }
+`
 
-    input FriendInput {
-        id: ID
-        firstName: String!
-        lastName: String
-        gender: String
-        language: String
-        email: String
-    }
-
-    type Mutation {
+const RootMutation = `
+    type mutation {
         createFriend(input: FriendInput): Friend
     }
 `
 
-const Friend = (id, { firstName, lastName, gender, language, email }) => {}
+const SchemaDefinition = `
+  schema {
+    query: query
+    mutation: mutation
+  }
+`
 
 const resolvers = {
-  Query: {
-    friend: async (_, { id }) => {
-      console.log(`\x1b[31m${id}\x1b[0m`)
-
+  query: {
+    getFriend: async (_, { id }) => {
       const resp = await FriendModel.findById({
         _id: id,
       })
@@ -48,7 +36,7 @@ const resolvers = {
       return friend
     },
   },
-  Mutation: {
+  mutation: {
     createFriend: async (_, { input: args }) => {
       console.log(args)
       debugger
@@ -68,7 +56,7 @@ const resolvers = {
 const logger = { log: e => console.log(e) }
 
 const makeExecSchemaParams = {
-  typeDefs,
+  typeDefs: [SchemaDefinition, RootQuery, RootMutation, Friend],
   resolvers,
   logger,
   allowUndefinedInResolve: false,
