@@ -1,6 +1,6 @@
 import { makeExecutableSchema } from 'graphql-tools'
 import FriendModel from '../models/friend'
-import Friend from './friend'
+import FriendSchema from './friend'
 
 const RootQuery = `
     type query {
@@ -40,13 +40,23 @@ const resolvers = {
     createFriend: async (_, { input: args }) => {
       console.log(args)
       debugger
-      const { firstName, lastName, gender, language, email } = args
+      const {
+        firstName,
+        lastName,
+        gender,
+        age,
+        language,
+        email,
+        contacts,
+      } = args
       const friend = await FriendModel.create({
         firstName,
         lastName,
         gender,
+        age,
         language,
         email,
+        contacts,
       })
       return friend
     },
@@ -56,7 +66,7 @@ const resolvers = {
 const logger = { log: e => console.log(e) }
 
 const makeExecSchemaParams = {
-  typeDefs: [SchemaDefinition, RootQuery, RootMutation, Friend],
+  typeDefs: [SchemaDefinition, RootQuery, RootMutation, ...FriendSchema],
   resolvers,
   logger,
   allowUndefinedInResolve: false,
