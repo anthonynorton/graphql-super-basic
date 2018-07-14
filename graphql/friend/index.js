@@ -1,33 +1,9 @@
-import ContactSchema from '../Contact'
+import FriendSchema from './schema'
+import FriendResolvers from './resovlers'
 
-const FriendSchema = `
-  type Friend {
-    id: ID
-    firstName: String
-    lastName: String
-    gender: Gender
-    age: Int
-    language: String
-    email: String
-    contacts: [Contact]
-  }
+const Friend = {
+  schema: FriendSchema,
+  resolvers: FriendResolvers,
+}
 
-  enum Gender {
-    MALE
-    FEMALE
-    OTHER
-  }
-
-  input FriendInput {
-      id: ID
-      firstName: String!
-      lastName: String
-      gender: Gender
-      age: Int
-      language: String
-      email: String
-      contacts: [ContactInput]
-  }
-`
-
-export default [FriendSchema, ContactSchema]
+export default Friend

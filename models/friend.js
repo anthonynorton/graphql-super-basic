@@ -17,4 +17,9 @@ const FriendSchema = new Schema({
   ],
 })
 
+FriendSchema.pre('findOneAndUpdate', async data => {
+  console.log(
+    `\x1b[32m\n\nfindOneAndUpdate » typeof data: ${typeof data}\n\n\x1b[0m`
+  )
+})
 export default defineOnce('Friend', FriendSchema)
