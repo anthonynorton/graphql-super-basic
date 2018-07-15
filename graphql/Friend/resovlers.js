@@ -3,17 +3,41 @@ import { prepare } from '../../utils'
 
 const resolvers = {
   query: {
-    getFriends: async () => await FriendModel.find(),
-    getOneFriend: async (_, { id }) => {
-      const resp = await FriendModel.findById({
-        _id: id,
+    getFriends: async () => {
+      return new Promise((resolve, reject) => {
+        FriendModel.find((err, data) => {
+          if (!err) {
+            resolve(data)
+          } else {
+            reject(data)
+          }
+        })
       })
-      const friend = await resp.toObject()
-      return friend
+    },
+    getOneFriend: (_, { id }) => {
+      return new Promise(async (resolve, reject) => {
+        FriendModel.findById({ _id: id }, (err, data) => {
+          if (!err) {
+            resolve(data)
+          } else {
+            reject(err)
+          }
+        })
+      })
     },
   },
   mutation: {
-    createFriend: async (_, { input }) => await FriendModel.create(input),
+    createFriend: async (_, { input }) => {
+      return new Promise((resolve, reject) => {
+        FriendModel.create(input, (err, data) => {
+          if (!err) {
+            resolve(data)
+          } else {
+            reject(err)
+          }
+        })
+      })
+    },
     updateFriend: async (_, { id, input }) => {
       return new Promise((resolve, reject) => {
         FriendModel.findByIdAndUpdate(
@@ -29,12 +53,8 @@ const resolvers = {
           }
         )
       })
-      // const friend = await FriendModel.findByIdAndUpdate({ _id: id }, input, {
-      //   upsert: true,
-      // })
-      // return friend
     },
-    deleteFriend: async (_, { id, input }) => {
+    deleteFriend: (_, { id, input }) => {
       return new Promise((resolve, reject) => {
         FriendModel.findByIdAndDelete({ _id: id }, err => {
           if (!err) {
